@@ -8,9 +8,15 @@ const persons = [
   {'id': 4, 'name': 'Mary Poppendieck', 'number': '39-23-6423122'}
 ];
 
+const getInfo = () => {
+  return `Phonebook has info for ${persons.length} people<br>${
+      new Date(Date.now()).toUTCString()}`;
+};
+
 app.get('/api/persons', (request, response) => {
   response.json(persons);
 });
+app.get('/info', (request, response) => {response.send(getInfo())})
 
 const PORT = 3001;
 app.listen(PORT, () => {console.log(`Server running on port ${PORT}`)})
