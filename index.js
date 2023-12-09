@@ -29,21 +29,34 @@ app.get(
 
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id;
-  Person.findById(id).then(p => {
-    if (p) {
-      response.send(p);
-    } else {
-      response.status(404).end();
-    }
-  });
+  Person.findById(id)
+      .then(p => {
+        if (p) {
+          response.send(p);
+        } else {
+          response.status(404).end();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        response.status(400).send({error: 'Malformatted id'});
+      });
 })
 app.get('/info', (request, response) => {response.send(getInfo())})
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-
-  persons = persons.filter(p => p.id !== id);
-
-  response.status(204).end();
+  const id = request.params.id;
+  Person.findByIdAndDelete(id)
+      .then(p => {
+        if (p) {
+          response.status(204).end();
+        } else {
+          response.status(404).end();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        response.status(400).send({error: 'Malformatted id'});
+      });
 })
 app.post('/api/persons', (request, response) => {
   const body = request.body;
