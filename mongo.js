@@ -5,9 +5,9 @@ if (process.argv.length < 3) {
   process.exit(1)
 }
 
-const password = process.argv[2]
+const password = process.argv[2];
 
-                 const url = `mongodb+srv://admin:${
+const url = `mongodb+srv://admin:${
     password}@cluster0.4qgfzx4.mongodb.net/?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery', false)
@@ -17,8 +17,6 @@ const personSchema = new mongoose.Schema({
   name: String,
   number: String,
 });
-
-
 
 const Person = mongoose.model('Person', personSchema);
 
