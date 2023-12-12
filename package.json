@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "nodemon index.js",
     "build:ui": "del dist /q /s && cd ../helsinki-course/part2/phonebook/ && npm run build && xcopy \"dist\" \"../../../helsinki-phonebook-backend/dist\" /S",
-    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "lint": "eslint .",
+    "lintfix": "eslint . --fix"
   },
   "author": "Marwan Esseghir",
   "license": "MIT",
   "devDependencies": {
     "@flydotio/dockerfile": "^0.4.11",
+    "eslint": "^8.55.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
