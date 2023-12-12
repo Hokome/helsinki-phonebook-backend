@@ -19,13 +19,12 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name === 'CastError') {
     return res.status(400).send({ error: 'Malformatted ID' });
+  } else if (err.name === 'ValidationError') {
+    return res.status(400).json({ error: err.message });
   }
 
   next(err);
 };
-
-app.use(unknownEndpoint);
-app.use(errorHandler);
 
 // const generateId =
 //     () => {
@@ -66,20 +65,24 @@ app.put('/api/persons/:id', (req, res) => {
 
   const person = { name: body.name, number: body.number };
 
-  Person.findByIdAndUpdate(id, person, { new: true })
+  Person.findByIdAndUpdate(id, person,
+    { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       res.json(updatedPerson);
     })
     .catch(err => next(err));
 });
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body;
 
   const person = new Person({ name: body.name, number: body.number });
   person.save().then(() => {
     res.json(person);
-  });
+  }).catch(err => next(err));
 });
+
+app.use(unknownEndpoint);
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {console.log(`Server running on port ${PORT}`);});
